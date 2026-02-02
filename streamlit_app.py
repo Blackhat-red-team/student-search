@@ -14,10 +14,12 @@ st.set_page_config(
 )
 
 # ══════════════════════════════════════════════════════════════
-# 🎨 التنسيقات والأنماط - RTL كامل + ألوان واضحة
+# 🎨 التنسيقات والأنماط - محسّنة بالكامل
 # ══════════════════════════════════════════════════════════════
 st.markdown("""
     <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap');
+    
     /* إخفاء عناصر Streamlit */
     #MainMenu, footer, header {visibility: hidden;}
     
@@ -25,7 +27,7 @@ st.markdown("""
     .stApp {
         direction: rtl !important;
         text-align: right !important;
-        font-family: 'Cairo', 'Tajawal', 'Segoe UI', Arial, sans-serif !important;
+        font-family: 'Cairo', 'Segoe UI', Arial, sans-serif !important;
         background: #0a0e27;
     }
     
@@ -33,24 +35,26 @@ st.markdown("""
     div, p, span, h1, h2, h3, label, input, textarea, select {
         direction: rtl !important;
         text-align: right !important;
+        font-family: 'Cairo', sans-serif !important;
     }
     
     /* Header */
     h1 {
-        color: #ffffff;
+        color: #ffffff !important;
         text-align: center !important;
-        margin-bottom: 5px;
-        font-size: 2.5rem !important;
-        font-weight: 700 !important;
+        margin-bottom: 5px !important;
+        font-size: 2.8rem !important;
+        font-weight: 900 !important;
+        text-shadow: 0 2px 10px rgba(102, 126, 234, 0.3);
     }
     
     /* Subtitle */
     .subtitle {
         text-align: center !important;
-        color: #9ba3af;
-        font-size: 1rem;
-        margin-bottom: 40px;
-        font-weight: 500;
+        color: #cbd5e1 !important;
+        font-size: 1.1rem !important;
+        margin-bottom: 40px !important;
+        font-weight: 600 !important;
     }
     
     /* Tabs */
@@ -59,7 +63,7 @@ st.markdown("""
     }
     
     .stTabs [data-baseweb="tab-list"] {
-        gap: 10px;
+        gap: 12px;
         direction: rtl !important;
         background-color: transparent;
     }
@@ -68,11 +72,11 @@ st.markdown("""
         direction: rtl !important;
         text-align: right !important;
         background-color: #1a1f3a;
-        border-radius: 12px;
-        color: #9ba3af;
-        padding: 12px 24px;
-        font-weight: 600;
-        font-size: 1rem;
+        border-radius: 14px;
+        color: #94a3b8;
+        padding: 14px 28px;
+        font-weight: 700;
+        font-size: 1.1rem;
         border: 2px solid transparent;
         transition: all 0.3s;
     }
@@ -80,57 +84,63 @@ st.markdown("""
     .stTabs [data-baseweb="tab"]:hover {
         background-color: #242b4a;
         color: #ffffff;
+        border-color: #667eea;
     }
     
     .stTabs [aria-selected="true"] {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
         color: #ffffff !important;
-        border: 2px solid #8b5cf6;
+        border: 2px solid #8b5cf6 !important;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
     }
     
     /* Input Fields */
     .stTextInput > div > div > input {
         direction: rtl !important;
         text-align: right !important;
-        background-color: #1a1f3a;
-        border: 2px solid #2d3748;
-        border-radius: 12px;
-        color: #ffffff;
-        padding: 14px;
-        font-size: 1rem;
-        font-weight: 500;
+        background-color: #1a1f3a !important;
+        border: 2px solid #334155 !important;
+        border-radius: 14px !important;
+        color: #ffffff !important;
+        padding: 16px !important;
+        font-size: 1.05rem !important;
+        font-weight: 600 !important;
+    }
+    
+    .stTextInput > div > div > input::placeholder {
+        color: #64748b !important;
     }
     
     .stTextInput > div > div > input:focus {
-        border-color: #667eea;
-        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        border-color: #667eea !important;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15) !important;
     }
     
     .stTextInput > label {
-        color: #ffffff !important;
-        font-weight: 600 !important;
-        font-size: 1rem !important;
-        margin-bottom: 8px !important;
+        color: #f1f5f9 !important;
+        font-weight: 700 !important;
+        font-size: 1.05rem !important;
+        margin-bottom: 10px !important;
     }
     
     /* Buttons */
     .stButton > button {
-        width: 100%;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        border: none;
-        border-radius: 12px;
-        padding: 14px 24px;
-        font-size: 1.1rem;
-        font-weight: 700;
-        cursor: pointer;
-        transition: all 0.3s;
-        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        width: 100% !important;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        color: white !important;
+        border: none !important;
+        border-radius: 14px !important;
+        padding: 16px 28px !important;
+        font-size: 1.15rem !important;
+        font-weight: 800 !important;
+        cursor: pointer !important;
+        transition: all 0.3s !important;
+        box-shadow: 0 6px 16px rgba(102, 126, 234, 0.35) !important;
     }
     
     .stButton > button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.5);
+        transform: translateY(-3px) !important;
+        box-shadow: 0 10px 25px rgba(102, 126, 234, 0.5) !important;
     }
     
     /* Expander */
@@ -138,12 +148,12 @@ st.markdown("""
         direction: rtl !important;
         text-align: right !important;
         background-color: #1a1f3a !important;
-        border: 2px solid #2d3748 !important;
-        border-radius: 12px !important;
+        border: 2px solid #334155 !important;
+        border-radius: 14px !important;
         color: #ffffff !important;
-        font-weight: 700 !important;
-        font-size: 1.1rem !important;
-        padding: 16px !important;
+        font-weight: 800 !important;
+        font-size: 1.2rem !important;
+        padding: 18px 20px !important;
     }
     
     .streamlit-expanderHeader:hover {
@@ -154,112 +164,144 @@ st.markdown("""
     .streamlit-expanderContent {
         direction: rtl !important;
         text-align: right !important;
-        background-color: #0a0e27 !important;
-        border: 2px solid #2d3748 !important;
+        background-color: #111827 !important;
+        border: 2px solid #334155 !important;
         border-top: none !important;
-        border-radius: 0 0 12px 12px !important;
-        padding: 20px !important;
+        border-radius: 0 0 14px 14px !important;
+        padding: 25px !important;
     }
     
-    /* بطاقات التقييم */
+    /* بطاقات التقييم - محسّنة بالكامل */
     .metric-card {
-        padding: 35px 20px;
-        border-radius: 20px;
+        padding: 40px 25px;
+        border-radius: 22px;
         color: white;
         text-align: center;
-        margin: 15px 5px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-        transition: all 0.3s;
-        border: 3px solid transparent;
+        margin: 18px 8px;
+        box-shadow: 0 12px 35px rgba(0,0,0,0.5);
+        transition: all 0.4s;
+        border: 3px solid rgba(255,255,255,0.1);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .metric-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+        pointer-events: none;
     }
     
     .metric-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+        transform: translateY(-10px) scale(1.02);
+        box-shadow: 0 18px 45px rgba(0,0,0,0.6);
     }
     
     .metric-title {
-        font-size: 1.3rem;
+        font-size: 1.4rem;
         font-weight: 900;
-        margin-bottom: 18px;
-        text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        margin-bottom: 20px;
+        text-shadow: 0 3px 10px rgba(0,0,0,0.4);
         letter-spacing: 0.5px;
+        position: relative;
+        z-index: 1;
     }
     
     .metric-score {
-        font-size: 4.5rem;
+        font-size: 5rem;
         font-weight: 900;
-        margin: 25px 0;
-        text-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        margin: 28px 0;
+        text-shadow: 0 5px 15px rgba(0,0,0,0.5);
         line-height: 1;
+        position: relative;
+        z-index: 1;
     }
     
     .metric-level {
-        font-size: 1.1rem;
-        margin-top: 12px;
-        font-weight: 700;
-        text-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        font-size: 1.15rem;
+        margin-top: 15px;
+        font-weight: 800;
+        text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        position: relative;
+        z-index: 1;
     }
     
-    /* ألوان المستويات - محسّنة للوضوح */
+    /* ألوان المستويات - أوضح بكتير */
     .excellent { 
-        background: linear-gradient(135deg, #059669 0%, #10b981 100%);
-        border-color: #34d399;
+        background: linear-gradient(135deg, #059669 0%, #10b981 50%, #34d399 100%);
+        border-color: #6ee7b7;
     }
     
     .very-good { 
-        background: linear-gradient(135deg, #7c3aed 0%, #a78bfa 100%);
-        border-color: #c4b5fd;
+        background: linear-gradient(135deg, #7c3aed 0%, #a78bfa 50%, #c4b5fd 100%);
+        border-color: #ddd6fe;
     }
     
     .good { 
-        background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%);
-        border-color: #fbbf24;
+        background: linear-gradient(135deg, #ea580c 0%, #f59e0b 50%, #fbbf24 100%);
+        border-color: #fcd34d;
     }
     
     .needs-improvement { 
-        background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
-        border-color: #f87171;
+        background: linear-gradient(135deg, #dc2626 0%, #ef4444 50%, #f87171 100%);
+        border-color: #fca5a5;
     }
     
     /* Alert boxes */
     .stAlert {
         direction: rtl !important;
         text-align: right !important;
-        border-radius: 12px !important;
-        font-weight: 600 !important;
+        border-radius: 14px !important;
+        font-weight: 700 !important;
+        font-size: 1.05rem !important;
+        padding: 18px !important;
     }
     
     /* Success/Warning/Error messages */
-    .stSuccess, .stWarning, .stError, .stInfo {
-        direction: rtl !important;
-        text-align: right !important;
-        font-weight: 600 !important;
-        font-size: 1rem !important;
+    .stSuccess {
+        background-color: rgba(16, 185, 129, 0.15) !important;
+        border: 2px solid #10b981 !important;
+        color: #6ee7b7 !important;
+    }
+    
+    .stWarning {
+        background-color: rgba(245, 158, 11, 0.15) !important;
+        border: 2px solid #f59e0b !important;
+        color: #fcd34d !important;
+    }
+    
+    .stError {
+        background-color: rgba(239, 68, 68, 0.15) !important;
+        border: 2px solid #ef4444 !important;
+        color: #fca5a5 !important;
     }
     
     /* Metrics */
     [data-testid="stMetricValue"] {
         direction: rtl !important;
         text-align: center !important;
-        font-size: 2.5rem !important;
-        color: #8b5cf6 !important;
+        font-size: 2.8rem !important;
+        color: #a78bfa !important;
         font-weight: 900 !important;
     }
     
     [data-testid="stMetricLabel"] {
         direction: rtl !important;
         text-align: center !important;
-        color: #ffffff !important;
+        color: #f1f5f9 !important;
         font-weight: 700 !important;
-        font-size: 1rem !important;
+        font-size: 1.1rem !important;
     }
     
     div[data-testid="stMetric"] {
         background-color: #1a1f3a;
-        padding: 20px;
-        border-radius: 12px;
-        border: 2px solid #2d3748;
+        padding: 25px;
+        border-radius: 14px;
+        border: 2px solid #334155;
     }
     
     /* Download button */
@@ -267,75 +309,127 @@ st.markdown("""
         background: linear-gradient(135deg, #059669 0%, #10b981 100%) !important;
         color: white !important;
         border: none !important;
-        border-radius: 12px !important;
-        padding: 14px 24px !important;
-        font-size: 1.1rem !important;
-        font-weight: 700 !important;
+        border-radius: 14px !important;
+        padding: 16px 28px !important;
+        font-size: 1.15rem !important;
+        font-weight: 800 !important;
         width: 100% !important;
-        box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3) !important;
+        box-shadow: 0 6px 16px rgba(5, 150, 105, 0.35) !important;
         transition: all 0.3s !important;
     }
     
     .stDownloadButton > button:hover {
-        transform: translateY(-2px) !important;
-        box-shadow: 0 8px 20px rgba(5, 150, 105, 0.5) !important;
+        transform: translateY(-3px) !important;
+        box-shadow: 0 10px 25px rgba(5, 150, 105, 0.5) !important;
     }
     
     /* Divider */
     hr {
-        margin: 40px 0;
-        border-color: #2d3748;
-        border-width: 2px;
+        margin: 45px 0 !important;
+        border-color: #334155 !important;
+        border-width: 2px !important;
     }
     
     /* Markdown content */
-    .element-container {
-        direction: rtl !important;
+    h2 {
+        color: #f1f5f9 !important;
+        font-weight: 800 !important;
+        font-size: 1.9rem !important;
+        margin-top: 30px !important;
     }
     
-    /* Headers in markdown */
-    h2, h3, h4 {
-        color: #ffffff !important;
+    h3 {
+        color: #e2e8f0 !important;
         font-weight: 700 !important;
+        font-size: 1.5rem !important;
+        margin-top: 25px !important;
     }
     
-    /* Paragraphs */
+    h4 {
+        color: #cbd5e1 !important;
+        font-weight: 700 !important;
+        font-size: 1.2rem !important;
+    }
+    
     p {
-        color: #d1d5db !important;
-        line-height: 1.8 !important;
-        font-size: 1rem !important;
+        color: #e2e8f0 !important;
+        line-height: 2 !important;
+        font-size: 1.05rem !important;
+        font-weight: 500 !important;
     }
     
-    /* Lists */
+    strong {
+        color: #f1f5f9 !important;
+        font-weight: 800 !important;
+    }
+    
     ul, ol {
-        color: #d1d5db !important;
-        line-height: 1.8 !important;
+        color: #e2e8f0 !important;
+        line-height: 2 !important;
+        font-size: 1.05rem !important;
+    }
+    
+    li {
+        margin: 8px 0 !important;
     }
     
     /* Tables */
     table {
-        color: #ffffff !important;
-        border-color: #2d3748 !important;
+        color: #f1f5f9 !important;
+        border-color: #334155 !important;
+        width: 100% !important;
     }
     
     th {
         background-color: #1a1f3a !important;
         color: #ffffff !important;
-        font-weight: 700 !important;
+        font-weight: 800 !important;
+        padding: 15px !important;
+        font-size: 1.05rem !important;
     }
     
     td {
-        border-color: #2d3748 !important;
+        border-color: #334155 !important;
+        padding: 12px !important;
+        color: #e2e8f0 !important;
+        font-weight: 600 !important;
     }
     
     /* Blockquote */
     blockquote {
-        border-right: 4px solid #8b5cf6 !important;
+        border-right: 5px solid #8b5cf6 !important;
         border-left: none !important;
         background-color: #1a1f3a !important;
-        padding: 15px 20px !important;
-        border-radius: 8px !important;
-        color: #d1d5db !important;
+        padding: 20px 25px !important;
+        border-radius: 12px !important;
+        color: #cbd5e1 !important;
+        font-size: 1.05rem !important;
+        line-height: 1.8 !important;
+    }
+    
+    /* Student Name Header */
+    .student-header {
+        background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+        padding: 20px;
+        border-radius: 14px;
+        margin-bottom: 25px;
+        border: 2px solid #475569;
+    }
+    
+    .student-name {
+        font-size: 1.6rem;
+        font-weight: 900;
+        color: #ffffff;
+        text-align: center;
+        margin: 0;
+    }
+    
+    .student-info {
+        font-size: 1.1rem;
+        color: #cbd5e1;
+        text-align: center;
+        margin-top: 8px;
+        font-weight: 600;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -372,6 +466,22 @@ def safe_int(value, default=0):
         return int(float(str(value).strip()))
     except:
         return default
+
+def get_student_name(row):
+    """استخراج اسم الطالب بشكل صحيح"""
+    # جرب كل الاحتمالات
+    name_columns = [
+        'اسم الطفل  كامل ',
+        'اسم الطفل كامل',
+        'اسم الطفل',
+        'الاسم'
+    ]
+    
+    for col in name_columns:
+        if col in row and pd.notna(row[col]) and str(row[col]).strip():
+            return str(row[col]).strip()
+    
+    return "طالب"
 
 # ══════════════════════════════════════════════════════════════
 # ⚽ محرك التقييم الذكي
@@ -539,9 +649,8 @@ class PlayerEvaluationEngine:
             return "يحتاج تطوير 📈", "needs-improvement"
     
     @staticmethod
-    def generate_report(player_data, scores):
+    def generate_report(player_name, player_data, scores):
         """📄 توليد تقرير احترافي"""
-        name = player_data.get('اسم الطفل  كامل ', 'الطالب')
         age = safe_int(player_data.get('السن', 0))
         
         avg_score = sum(scores.values()) / len(scores)
@@ -562,7 +671,7 @@ class PlayerEvaluationEngine:
 ## 🎯 تقرير التقييم الشامل
 
 ### معلومات الطالب
-- **الاسم:** {name}
+- **الاسم:** {player_name}
 - **السن:** {age} سنة
 - **التقييم العام:** {avg_score:.0f}/100 - **{overall_level}**
 
@@ -572,7 +681,7 @@ class PlayerEvaluationEngine:
 
 عزيزي ولي الأمر،
 
-يسعدنا تقديم تقرير تقييم شامل لابنك **{name}** بناءً على معايير علمية عالمية.
+يسعدنا تقديم تقرير تقييم شامل لابنك **{player_name}** بناءً على معايير علمية عالمية.
 
 #### ⭐ نقاط القوة
 
@@ -629,7 +738,7 @@ class PlayerEvaluationEngine:
 
 ### 🌟 الخلاصة والتوقعات
 
-ابنك **{name}** يمتلك أساساً **{overall_level}** ويظهر إمكانيات واعدة. 
+ابنك **{player_name}** يمتلك أساساً **{overall_level}** ويظهر إمكانيات واعدة. 
 
 **جميع النقاط التي تحتاج تطوير هي أمور طبيعية ومتوقعة** في هذا السن، ومع:
 - ✅ التدريب المنتظم (3-4 مرات أسبوعياً)
@@ -750,11 +859,19 @@ try:
                 st.success(f"✅ تم العثور على {len(results)} نتيجة")
                 
                 for idx, row in results.iterrows():
-                    student_name = row.get('اسم الطفل  كامل ', 'طالب')
+                    student_name = get_student_name(row)
+                    age = safe_int(row.get('السن', 0))
                     
-                    with st.expander(f"📋 {student_name} - اضغط للتفاصيل", expanded=True):
+                    with st.expander(f"📋 {student_name} ({age} سنة) - اضغط للتفاصيل", expanded=True):
                         
-                        age = safe_int(row.get('السن', 0))
+                        # عرض اسم الطالب بشكل بارز
+                        st.markdown(f"""
+                        <div class="student-header">
+                            <h2 class="student-name">⭐ {student_name}</h2>
+                            <p class="student-info">العمر: {age} سنة | التقييم الشامل</p>
+                        </div>
+                        """, unsafe_allow_html=True)
+                        
                         height = safe_float(row.get('طول الطفل بالسنتيمتر', 0))
                         weight = safe_float(row.get('وزن الطفل بالكيلوجرام ', 0))
                         
@@ -779,7 +896,7 @@ try:
                             )
                         }
                         
-                        # عرض البطاقات في صف واحد - من اليمين لليسار
+                        # عرض البطاقات - من اليمين لليسار
                         cols = st.columns(4)
                         
                         metrics_data = [
@@ -803,17 +920,17 @@ try:
                         st.divider()
                         
                         # التقرير الكامل
-                        report = PlayerEvaluationEngine.generate_report(row.to_dict(), scores)
+                        report = PlayerEvaluationEngine.generate_report(student_name, row.to_dict(), scores)
                         st.markdown(report)
                         
-                        # زر التحميل بـ key فريد
+                        # زر التحميل
                         st.download_button(
                             label="📥 تحميل التقرير كملف نصي",
                             data=report,
                             file_name=f"تقرير_{student_name.replace(' ', '_')}.txt",
                             mime="text/plain",
                             use_container_width=True,
-                            key=f"download_{idx}_{student_name[:10]}"  # ✅ key فريد لكل طالب
+                            key=f"download_{idx}_{hash(student_name)}"
                         )
     
     with tab2:
