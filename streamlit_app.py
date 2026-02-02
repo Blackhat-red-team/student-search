@@ -14,7 +14,7 @@ st.set_page_config(
 )
 
 # ══════════════════════════════════════════════════════════════
-# 🎨 التنسيقات والأنماط - RTL كامل
+# 🎨 التنسيقات والأنماط - RTL كامل + ألوان واضحة
 # ══════════════════════════════════════════════════════════════
 st.markdown("""
     <style>
@@ -25,8 +25,8 @@ st.markdown("""
     .stApp {
         direction: rtl !important;
         text-align: right !important;
-        font-family: 'Tajawal', 'Cairo', 'Segoe UI', Arial, sans-serif !important;
-        background: #0e1117;
+        font-family: 'Cairo', 'Tajawal', 'Segoe UI', Arial, sans-serif !important;
+        background: #0a0e27;
     }
     
     /* RTL لجميع العناصر */
@@ -39,15 +39,18 @@ st.markdown("""
     h1 {
         color: #ffffff;
         text-align: center !important;
-        margin-bottom: 10px;
+        margin-bottom: 5px;
+        font-size: 2.5rem !important;
+        font-weight: 700 !important;
     }
     
     /* Subtitle */
     .subtitle {
         text-align: center !important;
-        color: #a0a0a0;
-        font-size: 14px;
-        margin-bottom: 30px;
+        color: #9ba3af;
+        font-size: 1rem;
+        margin-bottom: 40px;
+        font-weight: 500;
     }
     
     /* Tabs */
@@ -56,37 +59,58 @@ st.markdown("""
     }
     
     .stTabs [data-baseweb="tab-list"] {
-        gap: 8px;
+        gap: 10px;
         direction: rtl !important;
+        background-color: transparent;
     }
     
     .stTabs [data-baseweb="tab"] {
         direction: rtl !important;
         text-align: right !important;
-        background-color: #1e1e1e;
-        border-radius: 8px;
+        background-color: #1a1f3a;
+        border-radius: 12px;
+        color: #9ba3af;
+        padding: 12px 24px;
+        font-weight: 600;
+        font-size: 1rem;
+        border: 2px solid transparent;
+        transition: all 0.3s;
+    }
+    
+    .stTabs [data-baseweb="tab"]:hover {
+        background-color: #242b4a;
         color: #ffffff;
-        padding: 10px 20px;
     }
     
     .stTabs [aria-selected="true"] {
-        background-color: #2d5f8d !important;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        color: #ffffff !important;
+        border: 2px solid #8b5cf6;
     }
     
     /* Input Fields */
     .stTextInput > div > div > input {
         direction: rtl !important;
         text-align: right !important;
-        background-color: #1e1e1e;
-        border: 1px solid #333;
-        border-radius: 8px;
+        background-color: #1a1f3a;
+        border: 2px solid #2d3748;
+        border-radius: 12px;
         color: #ffffff;
-        padding: 12px;
+        padding: 14px;
+        font-size: 1rem;
+        font-weight: 500;
+    }
+    
+    .stTextInput > div > div > input:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
     }
     
     .stTextInput > label {
         color: #ffffff !important;
-        font-weight: 600;
+        font-weight: 600 !important;
+        font-size: 1rem !important;
+        margin-bottom: 8px !important;
     }
     
     /* Buttons */
@@ -95,147 +119,223 @@ st.markdown("""
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
         border: none;
-        border-radius: 8px;
-        padding: 12px 24px;
-        font-size: 16px;
-        font-weight: bold;
+        border-radius: 12px;
+        padding: 14px 24px;
+        font-size: 1.1rem;
+        font-weight: 700;
         cursor: pointer;
         transition: all 0.3s;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
     }
     
     .stButton > button:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 16px rgba(102, 126, 234, 0.4);
+        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.5);
     }
     
     /* Expander */
     .streamlit-expanderHeader {
         direction: rtl !important;
         text-align: right !important;
-        background-color: #1e1e1e !important;
-        border: 1px solid #333 !important;
-        border-radius: 8px !important;
+        background-color: #1a1f3a !important;
+        border: 2px solid #2d3748 !important;
+        border-radius: 12px !important;
         color: #ffffff !important;
-        font-weight: 600;
+        font-weight: 700 !important;
+        font-size: 1.1rem !important;
+        padding: 16px !important;
+    }
+    
+    .streamlit-expanderHeader:hover {
+        background-color: #242b4a !important;
+        border-color: #667eea !important;
     }
     
     .streamlit-expanderContent {
         direction: rtl !important;
         text-align: right !important;
-        background-color: #0e1117 !important;
-        border: 1px solid #333 !important;
+        background-color: #0a0e27 !important;
+        border: 2px solid #2d3748 !important;
         border-top: none !important;
-        border-radius: 0 0 8px 8px !important;
+        border-radius: 0 0 12px 12px !important;
+        padding: 20px !important;
     }
     
     /* بطاقات التقييم */
     .metric-card {
-        padding: 30px 20px;
-        border-radius: 16px;
+        padding: 35px 20px;
+        border-radius: 20px;
         color: white;
         text-align: center;
         margin: 15px 5px;
-        box-shadow: 0 8px 16px rgba(0,0,0,0.3);
-        transition: transform 0.3s;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        transition: all 0.3s;
+        border: 3px solid transparent;
     }
     
     .metric-card:hover {
-        transform: translateY(-5px);
+        transform: translateY(-8px);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.5);
     }
     
     .metric-title {
-        font-size: 20px;
-        font-weight: 700;
-        margin-bottom: 15px;
-        opacity: 0.95;
+        font-size: 1.3rem;
+        font-weight: 900;
+        margin-bottom: 18px;
+        text-shadow: 0 2px 8px rgba(0,0,0,0.3);
         letter-spacing: 0.5px;
     }
     
     .metric-score {
-        font-size: 64px;
+        font-size: 4.5rem;
         font-weight: 900;
-        margin: 20px 0;
-        text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        margin: 25px 0;
+        text-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        line-height: 1;
     }
     
     .metric-level {
-        font-size: 16px;
-        opacity: 0.9;
-        margin-top: 10px;
-        font-weight: 500;
+        font-size: 1.1rem;
+        margin-top: 12px;
+        font-weight: 700;
+        text-shadow: 0 2px 6px rgba(0,0,0,0.2);
     }
     
-    /* ألوان المستويات */
+    /* ألوان المستويات - محسّنة للوضوح */
     .excellent { 
-        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+        border-color: #34d399;
     }
+    
     .very-good { 
-        background: linear-gradient(135deg, #4776E6 0%, #8E54E9 100%);
+        background: linear-gradient(135deg, #7c3aed 0%, #a78bfa 100%);
+        border-color: #c4b5fd;
     }
+    
     .good { 
-        background: linear-gradient(135deg, #F09819 0%, #EDDE5D 100%);
-        color: #333 !important;
+        background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%);
+        border-color: #fbbf24;
     }
-    .good .metric-score, .good .metric-title, .good .metric-level {
-        color: #333 !important;
-    }
+    
     .needs-improvement { 
-        background: linear-gradient(135deg, #ED213A 0%, #93291E 100%);
+        background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+        border-color: #f87171;
     }
     
     /* Alert boxes */
     .stAlert {
         direction: rtl !important;
         text-align: right !important;
-        border-radius: 8px;
+        border-radius: 12px !important;
+        font-weight: 600 !important;
     }
     
     /* Success/Warning/Error messages */
     .stSuccess, .stWarning, .stError, .stInfo {
         direction: rtl !important;
         text-align: right !important;
+        font-weight: 600 !important;
+        font-size: 1rem !important;
     }
     
     /* Metrics */
     [data-testid="stMetricValue"] {
         direction: rtl !important;
         text-align: center !important;
-        font-size: 32px !important;
-        color: #667eea !important;
+        font-size: 2.5rem !important;
+        color: #8b5cf6 !important;
+        font-weight: 900 !important;
     }
     
     [data-testid="stMetricLabel"] {
         direction: rtl !important;
         text-align: center !important;
         color: #ffffff !important;
+        font-weight: 700 !important;
+        font-size: 1rem !important;
+    }
+    
+    div[data-testid="stMetric"] {
+        background-color: #1a1f3a;
+        padding: 20px;
+        border-radius: 12px;
+        border: 2px solid #2d3748;
     }
     
     /* Download button */
     .stDownloadButton > button {
-        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-        color: white;
-        border: none;
-        border-radius: 8px;
-        padding: 12px 24px;
-        font-size: 16px;
-        font-weight: bold;
-        width: 100%;
+        background: linear-gradient(135deg, #059669 0%, #10b981 100%) !important;
+        color: white !important;
+        border: none !important;
+        border-radius: 12px !important;
+        padding: 14px 24px !important;
+        font-size: 1.1rem !important;
+        font-weight: 700 !important;
+        width: 100% !important;
+        box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3) !important;
+        transition: all 0.3s !important;
+    }
+    
+    .stDownloadButton > button:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 8px 20px rgba(5, 150, 105, 0.5) !important;
     }
     
     /* Divider */
     hr {
-        margin: 30px 0;
-        border-color: #333;
-    }
-    
-    /* Tables */
-    .dataframe {
-        direction: rtl !important;
+        margin: 40px 0;
+        border-color: #2d3748;
+        border-width: 2px;
     }
     
     /* Markdown content */
     .element-container {
         direction: rtl !important;
+    }
+    
+    /* Headers in markdown */
+    h2, h3, h4 {
+        color: #ffffff !important;
+        font-weight: 700 !important;
+    }
+    
+    /* Paragraphs */
+    p {
+        color: #d1d5db !important;
+        line-height: 1.8 !important;
+        font-size: 1rem !important;
+    }
+    
+    /* Lists */
+    ul, ol {
+        color: #d1d5db !important;
+        line-height: 1.8 !important;
+    }
+    
+    /* Tables */
+    table {
+        color: #ffffff !important;
+        border-color: #2d3748 !important;
+    }
+    
+    th {
+        background-color: #1a1f3a !important;
+        color: #ffffff !important;
+        font-weight: 700 !important;
+    }
+    
+    td {
+        border-color: #2d3748 !important;
+    }
+    
+    /* Blockquote */
+    blockquote {
+        border-right: 4px solid #8b5cf6 !important;
+        border-left: none !important;
+        background-color: #1a1f3a !important;
+        padding: 15px 20px !important;
+        border-radius: 8px !important;
+        color: #d1d5db !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -679,7 +779,7 @@ try:
                             )
                         }
                         
-                        # عرض البطاقات في صف واحد
+                        # عرض البطاقات في صف واحد - من اليمين لليسار
                         cols = st.columns(4)
                         
                         metrics_data = [
@@ -706,12 +806,14 @@ try:
                         report = PlayerEvaluationEngine.generate_report(row.to_dict(), scores)
                         st.markdown(report)
                         
+                        # زر التحميل بـ key فريد
                         st.download_button(
                             label="📥 تحميل التقرير كملف نصي",
                             data=report,
                             file_name=f"تقرير_{student_name.replace(' ', '_')}.txt",
                             mime="text/plain",
-                            use_container_width=True
+                            use_container_width=True,
+                            key=f"download_{idx}_{student_name[:10]}"  # ✅ key فريد لكل طالب
                         )
     
     with tab2:
