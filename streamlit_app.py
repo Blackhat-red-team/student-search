@@ -14,16 +14,14 @@ st.set_page_config(
 )
 
 # ══════════════════════════════════════════════════════════════
-# 🎨 التنسيقات والأنماط - محسّنة بالكامل
+# 🎨 التنسيقات والأنماط
 # ══════════════════════════════════════════════════════════════
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap');
     
-    /* إخفاء عناصر Streamlit */
     #MainMenu, footer, header {visibility: hidden;}
     
-    /* RTL للتطبيق بالكامل */
     .stApp {
         direction: rtl !important;
         text-align: right !important;
@@ -31,14 +29,12 @@ st.markdown("""
         background: #0a0e27;
     }
     
-    /* RTL لجميع العناصر */
     div, p, span, h1, h2, h3, label, input, textarea, select {
         direction: rtl !important;
         text-align: right !important;
         font-family: 'Cairo', sans-serif !important;
     }
     
-    /* Header */
     h1 {
         color: #ffffff !important;
         text-align: center !important;
@@ -48,7 +44,6 @@ st.markdown("""
         text-shadow: 0 2px 10px rgba(102, 126, 234, 0.3);
     }
     
-    /* Subtitle */
     .subtitle {
         text-align: center !important;
         color: #cbd5e1 !important;
@@ -57,7 +52,6 @@ st.markdown("""
         font-weight: 600 !important;
     }
     
-    /* Tabs */
     .stTabs {
         direction: rtl !important;
     }
@@ -94,7 +88,6 @@ st.markdown("""
         box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
     }
     
-    /* Input Fields */
     .stTextInput > div > div > input {
         direction: rtl !important;
         text-align: right !important;
@@ -123,7 +116,6 @@ st.markdown("""
         margin-bottom: 10px !important;
     }
     
-    /* Buttons */
     .stButton > button {
         width: 100% !important;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
@@ -143,7 +135,6 @@ st.markdown("""
         box-shadow: 0 10px 25px rgba(102, 126, 234, 0.5) !important;
     }
     
-    /* Expander */
     .streamlit-expanderHeader {
         direction: rtl !important;
         text-align: right !important;
@@ -171,7 +162,6 @@ st.markdown("""
         padding: 25px !important;
     }
     
-    /* بطاقات التقييم - محسّنة بالكامل */
     .metric-card {
         padding: 40px 25px;
         border-radius: 22px;
@@ -230,7 +220,6 @@ st.markdown("""
         z-index: 1;
     }
     
-    /* ألوان المستويات - أوضح بكتير */
     .excellent { 
         background: linear-gradient(135deg, #059669 0%, #10b981 50%, #34d399 100%);
         border-color: #6ee7b7;
@@ -251,7 +240,6 @@ st.markdown("""
         border-color: #fca5a5;
     }
     
-    /* Alert boxes */
     .stAlert {
         direction: rtl !important;
         text-align: right !important;
@@ -261,7 +249,6 @@ st.markdown("""
         padding: 18px !important;
     }
     
-    /* Success/Warning/Error messages */
     .stSuccess {
         background-color: rgba(16, 185, 129, 0.15) !important;
         border: 2px solid #10b981 !important;
@@ -274,13 +261,6 @@ st.markdown("""
         color: #fcd34d !important;
     }
     
-    .stError {
-        background-color: rgba(239, 68, 68, 0.15) !important;
-        border: 2px solid #ef4444 !important;
-        color: #fca5a5 !important;
-    }
-    
-    /* Metrics */
     [data-testid="stMetricValue"] {
         direction: rtl !important;
         text-align: center !important;
@@ -304,7 +284,6 @@ st.markdown("""
         border: 2px solid #334155;
     }
     
-    /* Download button */
     .stDownloadButton > button {
         background: linear-gradient(135deg, #059669 0%, #10b981 100%) !important;
         color: white !important;
@@ -323,14 +302,12 @@ st.markdown("""
         box-shadow: 0 10px 25px rgba(5, 150, 105, 0.5) !important;
     }
     
-    /* Divider */
     hr {
         margin: 45px 0 !important;
         border-color: #334155 !important;
         border-width: 2px !important;
     }
     
-    /* Markdown content */
     h2 {
         color: #f1f5f9 !important;
         font-weight: 800 !important;
@@ -373,7 +350,6 @@ st.markdown("""
         margin: 8px 0 !important;
     }
     
-    /* Tables */
     table {
         color: #f1f5f9 !important;
         border-color: #334155 !important;
@@ -395,7 +371,6 @@ st.markdown("""
         font-weight: 600 !important;
     }
     
-    /* Blockquote */
     blockquote {
         border-right: 5px solid #8b5cf6 !important;
         border-left: none !important;
@@ -407,28 +382,29 @@ st.markdown("""
         line-height: 1.8 !important;
     }
     
-    /* Student Name Header */
     .student-header {
-        background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-        padding: 20px;
-        border-radius: 14px;
-        margin-bottom: 25px;
-        border: 2px solid #475569;
+        background: linear-gradient(135deg, #1e3a5f 0%, #2d5f8d 100%);
+        padding: 25px 30px;
+        border-radius: 16px;
+        margin-bottom: 30px;
+        border: 3px solid #4a90e2;
+        box-shadow: 0 8px 20px rgba(74, 144, 226, 0.3);
     }
     
     .student-name {
-        font-size: 1.6rem;
+        font-size: 2rem;
         font-weight: 900;
         color: #ffffff;
         text-align: center;
         margin: 0;
+        text-shadow: 0 2px 8px rgba(0,0,0,0.3);
     }
     
     .student-info {
-        font-size: 1.1rem;
+        font-size: 1.2rem;
         color: #cbd5e1;
         text-align: center;
-        margin-top: 8px;
+        margin-top: 10px;
         font-weight: 600;
     }
     </style>
@@ -468,18 +444,29 @@ def safe_int(value, default=0):
         return default
 
 def get_student_name(row):
-    """استخراج اسم الطالب بشكل صحيح"""
-    # جرب كل الاحتمالات
-    name_columns = [
-        'اسم الطفل  كامل ',
+    """استخراج اسم الطالب بشكل صحيح من أي عمود ممكن"""
+    # جرب كل احتمالات أسماء الأعمدة
+    possible_columns = [
+        'اسم الطفل  كامل ',  # مع مسافات زيادة
         'اسم الطفل كامل',
+        'اسم الطفل  كامل',
         'اسم الطفل',
+        'الاسم الكامل',
         'الاسم'
     ]
     
-    for col in name_columns:
-        if col in row and pd.notna(row[col]) and str(row[col]).strip():
-            return str(row[col]).strip()
+    for col in possible_columns:
+        if col in row.index:
+            value = row[col]
+            if pd.notna(value) and str(value).strip() and str(value).strip().lower() != 'nan':
+                return str(value).strip()
+    
+    # لو مالقيناش، جرب أي عمود فيه كلمة "اسم"
+    for col in row.index:
+        if 'اسم' in col and 'ولي' not in col and 'نادي' not in col:
+            value = row[col]
+            if pd.notna(value) and str(value).strip() and str(value).strip().lower() != 'nan':
+                return str(value).strip()
     
     return "طالب"
 
@@ -517,7 +504,6 @@ class PlayerEvaluationEngine:
     
     @staticmethod
     def calculate_physical_score(age, height, weight):
-        """💪 التقييم البدني"""
         age_group = PlayerEvaluationEngine.get_age_group(age)
         standards = PlayerEvaluationEngine.AGE_STANDARDS[age_group]
         
@@ -546,7 +532,6 @@ class PlayerEvaluationEngine:
     
     @staticmethod
     def calculate_technical_score(previous_exp, duration, skills):
-        """⚽ التقييم الفني"""
         score = 0
         
         exp_map = {
@@ -580,7 +565,6 @@ class PlayerEvaluationEngine:
     
     @staticmethod
     def calculate_mental_score(motivation, matches, parent_present):
-        """🧠 التقييم الذهني"""
         score = 0
         
         motivation_map = {
@@ -610,7 +594,6 @@ class PlayerEvaluationEngine:
     
     @staticmethod
     def calculate_tactical_score(knows_rules, fitness_level, registered_in_club):
-        """🎯 التقييم التكتيكي"""
         score = 0
         
         rules_text = str(knows_rules).lower()
@@ -650,7 +633,6 @@ class PlayerEvaluationEngine:
     
     @staticmethod
     def generate_report(player_name, player_data, scores):
-        """📄 توليد تقرير احترافي"""
         age = safe_int(player_data.get('السن', 0))
         
         avg_score = sum(scores.values()) / len(scores)
@@ -859,12 +841,13 @@ try:
                 st.success(f"✅ تم العثور على {len(results)} نتيجة")
                 
                 for idx, row in results.iterrows():
+                    # استخراج الاسم بشكل صحيح
                     student_name = get_student_name(row)
                     age = safe_int(row.get('السن', 0))
                     
                     with st.expander(f"📋 {student_name} ({age} سنة) - اضغط للتفاصيل", expanded=True):
                         
-                        # عرض اسم الطالب بشكل بارز
+                        # عرض اسم الطالب بشكل بارز في Header
                         st.markdown(f"""
                         <div class="student-header">
                             <h2 class="student-name">⭐ {student_name}</h2>
@@ -896,7 +879,7 @@ try:
                             )
                         }
                         
-                        # عرض البطاقات - من اليمين لليسار
+                        # عرض البطاقات
                         cols = st.columns(4)
                         
                         metrics_data = [
@@ -919,7 +902,7 @@ try:
                         
                         st.divider()
                         
-                        # التقرير الكامل
+                        # التقرير الكامل مع اسم الطالب الصحيح
                         report = PlayerEvaluationEngine.generate_report(student_name, row.to_dict(), scores)
                         st.markdown(report)
                         
@@ -930,7 +913,7 @@ try:
                             file_name=f"تقرير_{student_name.replace(' ', '_')}.txt",
                             mime="text/plain",
                             use_container_width=True,
-                            key=f"download_{idx}_{hash(student_name)}"
+                            key=f"download_{idx}_{hash(student_name + str(age))}"
                         )
     
     with tab2:
