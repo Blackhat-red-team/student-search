@@ -1,94 +1,121 @@
-
 import streamlit as st
 import gspread
-import json
-from oauth2client.service_account import ServiceAccountCredentials
+from google.oauth2 import service_account
 import pandas as pd
 
-# إعدادات الصفحة
+# ──── إعدادات الصفحة ────
 st.set_page_config(
     page_title="البحث عن بيانات الطلاب",
     layout="centered",
     initial_sidebar_state="collapsed"
 )
 
-# إخفاء عناصر واجهة المستخدم الافتراضية لـ Streamlit
+# إخفاء عناصر واجهة Streamlit الافتراضية
 hide_st_style = """
-        <style>
-        #MainMenu {visibility: hidden;}
-        footer {visibility: hidden;}
-        header {visibility: hidden;}
-        </style>
-        """
+    <style>
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+    </style>
+"""
 st.markdown(hide_st_style, unsafe_allow_html=True)
 
-# تصميم الواجهة العربية
+# دعم الاتجاه من اليمين لليسار + خط عربي
 st.markdown("""
     <style>
     .stApp {
         direction: rtl;
         text-align: right;
-        font-family: 'Arial', sans-serif;
+        font-family: 'Arial', 'Tajawal', sans-serif;
     }
-    .stTextInput label {
+    .stTextInput > div > div > label {
         width: 100%;
     }
     </style>
-    """, unsafe_allow_html=True)
+""", unsafe_allow_html=True)
 
 st.title("البحث عن بيانات الطلاب")
 
-# دالة للاتصال بـ Google Sheet
-@st.cache_resource
-def connect_to_sheet():
+# ──── دالة الاتصال بالـ Sheet (cache للأداء) ────
+@st.cache_resource(show_spinner="جاري الاتصال بقاعدة البيانات...")
+def get_google_sheet():
     try:
-        # استخدام Streamlit Secrets لإدارة بيانات الاعتماد
-        creds_json = st.secrets["google_credentials"]
-        creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_json, ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive'])
+        # ──── استخدام الـ secrets بالشكل الصحيح ────
+        creds_info = st.secrets["gcp_service_account"]
+        
+        creds = service_account.Credentials.from_service_account_info(
+            creds_info,
+            scopes=[
+                "https://www.googleapis.com/auth/spreadsheets",
+                "https://www.googleapis.com/auth/drive"   # مهم لو هتكتب بيانات في المستقبل
+            ]
+        )
+
         client = gspread.authorize(creds)
 
-        # اسم ورقة العمل أو ID الخاص بها
-        # يجب استبدال 'اسم_ورقة_العمل_الخاصة_بك' أو 'ID_ورقة_العمل_الخاصة_بك'
-        # تأكد من مشاركة ورقة العمل مع البريد الإلكتروني الخاص بحساب الخدمة
-        sheet_id = st.secrets["google_sheet_id"]
-        sheet = client.open_by_key(sheet_id).sheet1
-        return sheet
+        # جيب الـ sheet_id من الـ secrets
+        sheet_id = st.secrets["gsheet"]["sheet_id"]   # أو st.secrets["sheet_id"] لو حاططها كده
+
+        spreadsheet = client.open_by_key(sheet_id)
+        worksheet = spreadsheet.sheet1   # أو spreadsheet.worksheet("اسم الورقة")
+
+        return worksheet
+
     except Exception as e:
-        st.error(f"خطأ في الاتصال بـ Google Sheet: {e}")
-        st.info("يرجى التأكد من إعداد Google Sheet و Streamlit Secrets بشكل صحيح.")
+        st.error(f"خطأ في الاتصال بـ Google Sheet: {str(e)}")
+        st.info("""
+        الحلول الشائعة:
+        • تأكد من إضافة الـ service account email كـ Editor في الـ Sheet (Share)
+        • تأكد من اسماء المفاتيح في Secrets متطابقة تمامًا
+        • انتظر 1-2 دقيقة بعد حفظ الـ Secrets
+        """)
         return None
 
-sheet = connect_to_sheet()
+# ──── الاتصال ────
+sheet = get_google_sheet()
 
 if sheet:
-    # قراءة جميع البيانات من ورقة العمل
-    data = sheet.get_all_records()
-    df = pd.DataFrame(data)
+    try:
+        # جلب البيانات
+        data = sheet.get_all_records(expected_headers=None)  # يتعامل مع الأعمدة حتى لو مش كاملة
+        if not data:
+            st.info("الورقة فارغة حاليًا.")
+        else:
+            df = pd.DataFrame(data)
 
-    if not df.empty:
-        st.write("--- ")
-        st.subheader("ابحث عن طالب")
+            st.write("─" * 60)
+            st.subheader("ابحث عن طالب")
 
-        search_term = st.text_input("أدخل اسم الطالب أو رقم الموبايل للبحث:", key="search_input")
+            search_term = st.text_input(
+                "أدخل اسم الطالب أو رقم الموبايل للبحث:",
+                key="search_input",
+                placeholder="اكتب الاسم أو الرقم..."
+            )
 
-        if st.button("بحث"):
-            if search_term:
-                # البحث في عمود 'اسم الطفل كامل' و 'رقم الموبايل ( واتساب )'
-                results = df[
-                    df['اسم الطفل كامل'].astype(str).str.contains(search_term, case=False, na=False) |
-                    df['رقم الموبايل ( واتساب )'].astype(str).str.contains(search_term, case=False, na=False)
-                ]
+            if st.button("بحث", type="primary"):
+                if search_term.strip():
+                    # بحث case-insensitive + partial match
+                    mask_name = df['اسم الطفل كامل'].astype(str).str.contains(search_term, case=False, na=False)
+                    mask_phone = df['رقم الموبايل ( واتساب )'].astype(str).str.contains(search_term, case=False, na=False)
+                    
+                    results = df[mask_name | mask_phone]
 
-                if not results.empty:
-                    st.success(f"تم العثور على {len(results)} نتيجة:")
-                    # عرض النتائج في جدول
-                    st.dataframe(results)
+                    if not results.empty:
+                        st.success(f"تم العثور على {len(results)} نتيجة")
+                        st.dataframe(
+                            results,
+                            use_container_width=True,
+                            hide_index=True
+                        )
+                    else:
+                        st.warning("لم يتم العثور على أي نتائج مطابقة.")
                 else:
-                    st.warning("لم يتم العثور على أي نتائج مطابقة.")
-            else:
-                st.info("الرجاء إدخال كلمة للبحث.")
-    else:
-        st.info("لا توجد بيانات في ورقة العمل حتى الآن.")
+                    st.info("الرجاء إدخال كلمة بحث.")
+    except Exception as e:
+        st.error(f"خطأ أثناء قراءة البيانات: {e}")
+        st.info("تأكد من وجود الأعمدة المطلوبة: 'اسم الطفل كامل' و 'رقم الموبايل ( واتساب )'")
 else:
-    st.warning("تعذر الاتصال بـ Google Sheet. يرجى التحقق من الإعدادات.")
+    st.warning("تعذر الاتصال بقاعدة البيانات. تحقق من إعدادات Secrets والصلاحيات.")
 
+st.markdown("---")
+st.caption("تم تطوير التطبيق باستخدام Streamlit & Google Sheets")
