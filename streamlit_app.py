@@ -5,7 +5,9 @@ import pandas as pd
 import re
 from datetime import datetime
 
-# ──── إعداد الصفحة ────
+# ══════════════════════════════════════════════════════════════
+# ⚙️ إعداد الصفحة
+# ══════════════════════════════════════════════════════════════
 st.set_page_config(
     page_title="نظام تقييم الطلاب الرياضي", 
     layout="wide", 
@@ -14,18 +16,20 @@ st.set_page_config(
 )
 
 # ══════════════════════════════════════════════════════════════
-# 🎨 التنسيقات والأنماط
+# 🎨 التنسيقات والأنماط - كاملة
 # ══════════════════════════════════════════════════════════════
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap');
     
+    /* إخفاء العناصر الافتراضية */
     #MainMenu, footer, header {visibility: hidden;}
     
+    /* RTL للتطبيق كامل */
     .stApp {
         direction: rtl !important;
         text-align: right !important;
-        font-family: 'Cairo', 'Segoe UI', Arial, sans-serif !important;
+        font-family: 'Cairo', sans-serif !important;
         background: #0a0e27;
     }
     
@@ -35,13 +39,14 @@ st.markdown("""
         font-family: 'Cairo', sans-serif !important;
     }
     
+    /* العناوين */
     h1 {
         color: #ffffff !important;
         text-align: center !important;
-        margin-bottom: 5px !important;
         font-size: 2.8rem !important;
         font-weight: 900 !important;
         text-shadow: 0 2px 10px rgba(102, 126, 234, 0.3);
+        margin-bottom: 10px !important;
     }
     
     .subtitle {
@@ -52,6 +57,7 @@ st.markdown("""
         font-weight: 600 !important;
     }
     
+    /* Tabs */
     .stTabs {
         direction: rtl !important;
     }
@@ -59,12 +65,9 @@ st.markdown("""
     .stTabs [data-baseweb="tab-list"] {
         gap: 12px;
         direction: rtl !important;
-        background-color: transparent;
     }
     
     .stTabs [data-baseweb="tab"] {
-        direction: rtl !important;
-        text-align: right !important;
         background-color: #1a1f3a;
         border-radius: 14px;
         color: #94a3b8;
@@ -88,6 +91,7 @@ st.markdown("""
         box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
     }
     
+    /* Input Fields */
     .stTextInput > div > div > input {
         direction: rtl !important;
         text-align: right !important;
@@ -113,9 +117,9 @@ st.markdown("""
         color: #f1f5f9 !important;
         font-weight: 700 !important;
         font-size: 1.05rem !important;
-        margin-bottom: 10px !important;
     }
     
+    /* Buttons */
     .stButton > button {
         width: 100% !important;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
@@ -125,9 +129,8 @@ st.markdown("""
         padding: 16px 28px !important;
         font-size: 1.15rem !important;
         font-weight: 800 !important;
-        cursor: pointer !important;
-        transition: all 0.3s !important;
         box-shadow: 0 6px 16px rgba(102, 126, 234, 0.35) !important;
+        transition: all 0.3s !important;
     }
     
     .stButton > button:hover {
@@ -135,6 +138,7 @@ st.markdown("""
         box-shadow: 0 10px 25px rgba(102, 126, 234, 0.5) !important;
     }
     
+    /* Expander */
     .streamlit-expanderHeader {
         direction: rtl !important;
         text-align: right !important;
@@ -162,6 +166,7 @@ st.markdown("""
         padding: 25px !important;
     }
     
+    /* بطاقات التقييم */
     .metric-card {
         padding: 40px 25px;
         border-radius: 22px;
@@ -196,7 +201,6 @@ st.markdown("""
         font-weight: 900;
         margin-bottom: 20px;
         text-shadow: 0 3px 10px rgba(0,0,0,0.4);
-        letter-spacing: 0.5px;
         position: relative;
         z-index: 1;
     }
@@ -220,6 +224,7 @@ st.markdown("""
         z-index: 1;
     }
     
+    /* ألوان المستويات */
     .excellent { 
         background: linear-gradient(135deg, #059669 0%, #10b981 50%, #34d399 100%);
         border-color: #6ee7b7;
@@ -240,6 +245,34 @@ st.markdown("""
         border-color: #fca5a5;
     }
     
+    /* Student Header */
+    .student-header {
+        background: linear-gradient(135deg, #1e3a5f 0%, #2d5f8d 100%);
+        padding: 25px 30px;
+        border-radius: 16px;
+        margin-bottom: 30px;
+        border: 3px solid #4a90e2;
+        box-shadow: 0 8px 20px rgba(74, 144, 226, 0.3);
+    }
+    
+    .student-name {
+        font-size: 2rem;
+        font-weight: 900;
+        color: #ffffff;
+        text-align: center;
+        margin: 0;
+        text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    
+    .student-info {
+        font-size: 1.2rem;
+        color: #cbd5e1;
+        text-align: center;
+        margin-top: 10px;
+        font-weight: 600;
+    }
+    
+    /* Alerts */
     .stAlert {
         direction: rtl !important;
         text-align: right !important;
@@ -261,6 +294,7 @@ st.markdown("""
         color: #fcd34d !important;
     }
     
+    /* Metrics */
     [data-testid="stMetricValue"] {
         direction: rtl !important;
         text-align: center !important;
@@ -284,6 +318,7 @@ st.markdown("""
         border: 2px solid #334155;
     }
     
+    /* Download Button */
     .stDownloadButton > button {
         background: linear-gradient(135deg, #059669 0%, #10b981 100%) !important;
         color: white !important;
@@ -294,7 +329,6 @@ st.markdown("""
         font-weight: 800 !important;
         width: 100% !important;
         box-shadow: 0 6px 16px rgba(5, 150, 105, 0.35) !important;
-        transition: all 0.3s !important;
     }
     
     .stDownloadButton > button:hover {
@@ -302,12 +336,7 @@ st.markdown("""
         box-shadow: 0 10px 25px rgba(5, 150, 105, 0.5) !important;
     }
     
-    hr {
-        margin: 45px 0 !important;
-        border-color: #334155 !important;
-        border-width: 2px !important;
-    }
-    
+    /* Markdown Content */
     h2 {
         color: #f1f5f9 !important;
         font-weight: 800 !important;
@@ -350,6 +379,7 @@ st.markdown("""
         margin: 8px 0 !important;
     }
     
+    /* Tables */
     table {
         color: #f1f5f9 !important;
         border-color: #334155 !important;
@@ -371,6 +401,7 @@ st.markdown("""
         font-weight: 600 !important;
     }
     
+    /* Blockquote */
     blockquote {
         border-right: 5px solid #8b5cf6 !important;
         border-left: none !important;
@@ -379,33 +410,12 @@ st.markdown("""
         border-radius: 12px !important;
         color: #cbd5e1 !important;
         font-size: 1.05rem !important;
-        line-height: 1.8 !important;
     }
     
-    .student-header {
-        background: linear-gradient(135deg, #1e3a5f 0%, #2d5f8d 100%);
-        padding: 25px 30px;
-        border-radius: 16px;
-        margin-bottom: 30px;
-        border: 3px solid #4a90e2;
-        box-shadow: 0 8px 20px rgba(74, 144, 226, 0.3);
-    }
-    
-    .student-name {
-        font-size: 2rem;
-        font-weight: 900;
-        color: #ffffff;
-        text-align: center;
-        margin: 0;
-        text-shadow: 0 2px 8px rgba(0,0,0,0.3);
-    }
-    
-    .student-info {
-        font-size: 1.2rem;
-        color: #cbd5e1;
-        text-align: center;
-        margin-top: 10px;
-        font-weight: 600;
+    hr {
+        margin: 45px 0 !important;
+        border-color: #334155 !important;
+        border-width: 2px !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -415,27 +425,23 @@ st.markdown("""
 # ══════════════════════════════════════════════════════════════
 
 def clean_number(num):
-    """تنظيف الأرقام من أي رموز أو مسافات"""
+    """تنظيف الأرقام من المسافات والرموز"""
     if pd.isna(num) or num == "" or str(num).lower() in ['لا يوجود', 'لا يوجد', 'nan']:
         return ""
     
     num_str = str(num).strip()
+    # تحويل أرقام عربية لإنجليزية
     arabic_to_english = str.maketrans('٠١٢٣٤٥٦٧٨٩', '0123456789')
     num_str = num_str.translate(arabic_to_english)
+    # إزالة كل شيء ماعدا الأرقام
     num_str = re.sub(r'[^0-9]', '', num_str)
+    # إزالة الأصفار من البداية
     num_str = num_str.lstrip('0')
     
     return num_str
 
-def safe_float(value, default=0):
-    try:
-        if pd.isna(value) or value == "" or value is None:
-            return default
-        return float(str(value).strip())
-    except:
-        return default
-
 def safe_int(value, default=0):
+    """تحويل آمن للأرقام الصحيحة"""
     try:
         if pd.isna(value) or value == "" or value is None:
             return default
@@ -443,40 +449,41 @@ def safe_int(value, default=0):
     except:
         return default
 
-def get_student_name(row):
-    """استخراج اسم الطالب بشكل صحيح من أي عمود ممكن"""
-    # جرب كل احتمالات أسماء الأعمدة
-    possible_columns = [
-        'اسم الطفل  كامل ',  # مع مسافات زيادة
-        'اسم الطفل كامل',
-        'اسم الطفل  كامل',
-        'اسم الطفل',
-        'الاسم الكامل',
-        'الاسم'
-    ]
-    
-    for col in possible_columns:
-        if col in row.index:
-            value = row[col]
-            if pd.notna(value) and str(value).strip() and str(value).strip().lower() != 'nan':
-                return str(value).strip()
-    
-    # لو مالقيناش، جرب أي عمود فيه كلمة "اسم"
-    for col in row.index:
-        if 'اسم' in col and 'ولي' not in col and 'نادي' not in col:
-            value = row[col]
-            if pd.notna(value) and str(value).strip() and str(value).strip().lower() != 'nan':
-                return str(value).strip()
-    
-    return "طالب"
+def safe_float(value, default=0):
+    """تحويل آمن للأرقام العشرية"""
+    try:
+        if pd.isna(value) or value == "" or value is None:
+            return default
+        return float(str(value).strip())
+    except:
+        return default
+
+def find_column(df, keywords):
+    """البحث عن عمود بناءً على كلمات مفتاحية"""
+    for col in df.columns:
+        for keyword in keywords:
+            if keyword in col:
+                return col
+    return None
+
+def get_value(row, keywords, default=""):
+    """استخراج قيمة من صف بشكل آمن"""
+    for keyword in keywords:
+        for col in row.index:
+            if keyword in col:
+                val = row[col]
+                if pd.notna(val) and str(val).strip() and str(val).strip().lower() != 'nan':
+                    return str(val).strip()
+    return default
 
 # ══════════════════════════════════════════════════════════════
 # ⚽ محرك التقييم الذكي
 # ══════════════════════════════════════════════════════════════
 
 class PlayerEvaluationEngine:
-    """محرك تقييم اللاعبين بناءً على معايير علمية"""
+    """محرك تقييم اللاعبين بناءً على معايير علمية عالمية"""
     
+    # المعايير العالمية حسب العمر
     AGE_STANDARDS = {
         "8-10": {
             "height": {"min": 120, "ideal": 135, "max": 145},
@@ -494,6 +501,7 @@ class PlayerEvaluationEngine:
     
     @staticmethod
     def get_age_group(age):
+        """تحديد الفئة العمرية"""
         if 8 <= age <= 10:
             return "8-10"
         elif 11 <= age <= 13:
@@ -504,9 +512,14 @@ class PlayerEvaluationEngine:
     
     @staticmethod
     def calculate_physical_score(age, height, weight):
+        """💪 التقييم البدني"""
+        if age == 0 or height == 0:
+            return 50  # درجة افتراضية
+            
         age_group = PlayerEvaluationEngine.get_age_group(age)
         standards = PlayerEvaluationEngine.AGE_STANDARDS[age_group]
         
+        # تقييم الطول (50 نقطة)
         height_score = 0
         if height >= standards["height"]["ideal"]:
             height_score = 50
@@ -516,6 +529,7 @@ class PlayerEvaluationEngine:
         else:
             height_score = 20
         
+        # تقييم الوزن (50 نقطة)
         ideal_weight = standards["weight"]["ideal"]
         weight_diff = abs(weight - ideal_weight)
         
@@ -532,8 +546,10 @@ class PlayerEvaluationEngine:
     
     @staticmethod
     def calculate_technical_score(previous_exp, duration, skills):
+        """⚽ التقييم الفني"""
         score = 0
         
+        # الخبرة السابقة (40 نقطة)
         exp_map = {
             "لعب اكثر من موسم": 40,
             "لعب فترة قصيرة": 25,
@@ -541,6 +557,7 @@ class PlayerEvaluationEngine:
         }
         score += exp_map.get(str(previous_exp).strip(), 15)
         
+        # مدة اللعب (30 نقطة)
         duration_map = {
             "اكثر من سنه": 30,
             "من 6 شهور الي سنة": 20,
@@ -549,6 +566,7 @@ class PlayerEvaluationEngine:
         }
         score += duration_map.get(str(duration).strip(), 10)
         
+        # المهارات (30 نقطة)
         skills_text = str(skills).lower()
         skill_score = 15
         
@@ -565,8 +583,10 @@ class PlayerEvaluationEngine:
     
     @staticmethod
     def calculate_mental_score(motivation, matches, parent_present):
+        """🧠 التقييم الذهني"""
         score = 0
         
+        # الدافع (50 نقطة)
         motivation_map = {
             "احتراف مستقبلي": 50,
             "حب كرة القدم": 40,
@@ -575,6 +595,7 @@ class PlayerEvaluationEngine:
         }
         score += motivation_map.get(str(motivation).strip(), 30)
         
+        # المباريات (30 نقطة)
         matches_text = str(matches).lower()
         if "رسمية" in matches_text:
             score += 30
@@ -583,6 +604,7 @@ class PlayerEvaluationEngine:
         else:
             score += 10
         
+        # حضور ولي الأمر (20 نقطة)
         if str(parent_present).strip() == "نعم":
             score += 20
         elif str(parent_present).strip() == "ربما":
@@ -594,8 +616,10 @@ class PlayerEvaluationEngine:
     
     @staticmethod
     def calculate_tactical_score(knows_rules, fitness_level, registered_in_club):
+        """🎯 التقييم التكتيكي"""
         score = 0
         
+        # معرفة القوانين (40 نقطة)
         rules_text = str(knows_rules).lower()
         if "يتحكم" in rules_text or "يعرف" in rules_text:
             score += 40
@@ -606,6 +630,7 @@ class PlayerEvaluationEngine:
         else:
             score += 20
         
+        # مستوى اللياقة (35 نقطة)
         fitness_map = {
             "أكثر من طبيعي": 35,
             "مناسب": 30,
@@ -613,6 +638,7 @@ class PlayerEvaluationEngine:
         }
         score += fitness_map.get(str(fitness_level).strip(), 25)
         
+        # التسجيل في نادي (25 نقطة)
         if str(registered_in_club).strip() == "نعم":
             score += 25
         else:
@@ -622,6 +648,7 @@ class PlayerEvaluationEngine:
     
     @staticmethod
     def get_level_category(score):
+        """تحديد المستوى بناءً على الدرجة"""
         if score >= 85:
             return "ممتاز ⭐⭐⭐", "excellent"
         elif score >= 70:
@@ -632,8 +659,8 @@ class PlayerEvaluationEngine:
             return "يحتاج تطوير 📈", "needs-improvement"
     
     @staticmethod
-    def generate_report(player_name, player_data, scores):
-        age = safe_int(player_data.get('السن', 0))
+    def generate_report(player_name, age, scores):
+        """📄 توليد تقرير احترافي كامل"""
         
         avg_score = sum(scores.values()) / len(scores)
         overall_level, _ = PlayerEvaluationEngine.get_level_category(avg_score)
@@ -706,7 +733,7 @@ class PlayerEvaluationEngine:
 - التشجيع المستمر والإيجابي من الأسرة
 - وضع أهداف صغيرة قابلة للتحقيق
 - المشاركة في مباريات ودية لزيادة الثقة
-- مكافأة التقدم والمجهود (وليس النتائج فقط)
+- مكافأة التقدم والمجهود
 """
             elif weakest[0] == "tactical":
                 report += """**🎯 توصيات التطوير التكتيكي:**
@@ -751,17 +778,18 @@ class PlayerEvaluationEngine:
 > **💡 ملاحظة هامة:** هذا التقييم أداة إرشادية لمساعدتك في متابعة تطور ابنك. 
 > النجاح الحقيقي يُقاس بالتقدم المستمر والاستمتاع باللعبة! ⚽💚
 
-*تم إنشاء هذا التقرير بواسطة نظام EDUVIA الرياضي الذكي*
+*تم إنشاء هذا التقرير بواسطة نظام EDUVIA الرياضي الذكي - {datetime.now().strftime('%Y-%m-%d')}*
 """
         
         return report
 
 # ══════════════════════════════════════════════════════════════
-# 🔌 الاتصال بـ Google Sheets
+# 🔌 الاتصال بقاعدة البيانات
 # ══════════════════════════════════════════════════════════════
 
 @st.cache_resource(show_spinner="🔄 جاري الاتصال بقاعدة البيانات...")
 def get_sheet():
+    """الاتصال بـ Google Sheets"""
     try:
         creds = service_account.Credentials.from_service_account_info(
             st.secrets["gcp_service_account"],
@@ -788,6 +816,7 @@ if not ws:
     st.stop()
 
 try:
+    # قراءة البيانات
     data = ws.get_all_records()
     if not data:
         st.info("📭 الورقة فارغة")
@@ -801,8 +830,12 @@ try:
     for col in phone_cols:
         df[f'{col}_clean'] = df[col].apply(clean_number)
     
+    # التبويبات
     tab1, tab2 = st.tabs(["🔍 البحث عن طالب", "📊 إحصائيات عامة"])
     
+    # ═══════════════════════════════════════════════════════════
+    # TAB 1: البحث عن الطلاب
+    # ═══════════════════════════════════════════════════════════
     with tab1:
         st.subheader("ابحث عن طالب للحصول على تقييمه الكامل")
         
@@ -812,8 +845,7 @@ try:
             search = st.text_input(
                 "اسم الطفل أو رقم الموبايل",
                 placeholder="مثال: محمد طارق  أو  01229920187",
-                key="search",
-                label_visibility="visible"
+                key="search"
             ).strip()
         
         with col2:
@@ -824,9 +856,11 @@ try:
         if search_btn and search:
             search_clean = clean_number(search)
             
-            name_col = next((c for c in df.columns if 'اسم الطفل' in c), None)
+            # البحث في الأسماء
+            name_col = find_column(df, ['اسم الطفل'])
             mask = df[name_col].astype(str).str.contains(search, case=False, na=False) if name_col else pd.Series([False] * len(df))
             
+            # البحث في الأرقام
             if search_clean:
                 for col in phone_cols:
                     clean_col = f'{col}_clean'
@@ -841,13 +875,13 @@ try:
                 st.success(f"✅ تم العثور على {len(results)} نتيجة")
                 
                 for idx, row in results.iterrows():
-                    # استخراج الاسم بشكل صحيح
-                    student_name = get_student_name(row)
-                    age = safe_int(row.get('السن', 0))
+                    # استخراج البيانات
+                    student_name = get_value(row, ['اسم الطفل'], 'طالب')
+                    age = safe_int(get_value(row, ['السن', 'العمر'], '0'))
                     
                     with st.expander(f"📋 {student_name} ({age} سنة) - اضغط للتفاصيل", expanded=True):
                         
-                        # عرض اسم الطالب بشكل بارز في Header
+                        # Header الطالب
                         st.markdown(f"""
                         <div class="student-header">
                             <h2 class="student-name">⭐ {student_name}</h2>
@@ -855,27 +889,29 @@ try:
                         </div>
                         """, unsafe_allow_html=True)
                         
-                        height = safe_float(row.get('طول الطفل بالسنتيمتر', 0))
-                        weight = safe_float(row.get('وزن الطفل بالكيلوجرام ', 0))
+                        # استخراج البيانات للتقييم
+                        height = safe_float(get_value(row, ['طول'], '0'))
+                        weight = safe_float(get_value(row, ['وزن'], '0'))
                         
+                        # حساب الدرجات
                         scores = {
                             "physical": PlayerEvaluationEngine.calculate_physical_score(
                                 age, height, weight
                             ),
                             "technical": PlayerEvaluationEngine.calculate_technical_score(
-                                row.get('هل سبق للطفل اللعب في أكاديمية كرة قدم ؟', ''),
-                                row.get('مده اللعب ', ''),
-                                row.get('اختر ما بنطبق  علي الطفل ', '')
+                                get_value(row, ['اللعب في أكاديمية']),
+                                get_value(row, ['مده اللعب', 'مدة']),
+                                get_value(row, ['بنطبق', 'مهارات'])
                             ),
                             "mental": PlayerEvaluationEngine.calculate_mental_score(
-                                row.get('سبب الانضمام للأكاديمية ', ''),
-                                row.get('هل شارك في مباريات ؟', ''),
-                                row.get('هل ولي الامر متواجد اثناء التدريب', '')
+                                get_value(row, ['سبب الانضمام']),
+                                get_value(row, ['مباريات']),
+                                get_value(row, ['ولي الامر متواجد'])
                             ),
                             "tactical": PlayerEvaluationEngine.calculate_tactical_score(
-                                row.get('اختر ما بنطبق  علي الطفل ', ''),
-                                row.get('تقدير ولي الأمر لوزن الطفل', ''),
-                                row.get('هل الطفل مسجل في نادي حاليا؟', '')
+                                get_value(row, ['بنطبق', 'مهارات']),
+                                get_value(row, ['تقدير', 'وزن']),
+                                get_value(row, ['مسجل في نادي'])
                             )
                         }
                         
@@ -902,8 +938,8 @@ try:
                         
                         st.divider()
                         
-                        # التقرير الكامل مع اسم الطالب الصحيح
-                        report = PlayerEvaluationEngine.generate_report(student_name, row.to_dict(), scores)
+                        # التقرير الكامل
+                        report = PlayerEvaluationEngine.generate_report(student_name, age, scores)
                         st.markdown(report)
                         
                         # زر التحميل
@@ -916,6 +952,9 @@ try:
                             key=f"download_{idx}_{hash(student_name + str(age))}"
                         )
     
+    # ═══════════════════════════════════════════════════════════
+    # TAB 2: الإحصائيات
+    # ═══════════════════════════════════════════════════════════
     with tab2:
         st.subheader("📊 إحصائيات عامة")
         
@@ -925,17 +964,26 @@ try:
             st.metric("إجمالي الطلاب", len(df))
         
         with col2:
-            avg_age = df['السن'].apply(safe_int).mean()
+            # حساب متوسط العمر بشكل آمن
+            ages = []
+            for _, row in df.iterrows():
+                age = safe_int(get_value(row, ['السن', 'العمر'], '0'))
+                if age > 0:
+                    ages.append(age)
+            avg_age = sum(ages) / len(ages) if ages else 0
             st.metric("متوسط العمر", f"{avg_age:.1f} سنة")
         
         with col3:
-            has_exp = df['هل سبق للطفل اللعب في أكاديمية كرة قدم ؟'].apply(
-                lambda x: 1 if 'لعب' in str(x) else 0
-            ).sum()
+            # حساب عدد من لديهم خبرة
+            exp_col = find_column(df, ['اللعب في أكاديمية'])
+            if exp_col:
+                has_exp = df[exp_col].astype(str).str.contains('لعب', na=False).sum()
+            else:
+                has_exp = 0
             st.metric("لديهم خبرة سابقة", f"{has_exp} طالب")
 
 except Exception as e:
-    st.error("❌ خطأ في قراءة البيانات")
+    st.error(f"❌ خطأ في قراءة البيانات: {str(e)}")
     st.exception(e)
 
 st.markdown("---")
