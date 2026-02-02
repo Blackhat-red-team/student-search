@@ -5,148 +5,120 @@ import pandas as pd
 import re
 
 # ──── إعداد الصفحة ────
-st.set_page_config(
-    page_title="البحث عن بيانات الطلاب",
-    layout="wide",
-    initial_sidebar_state="collapsed"
-)
+st.set_page_config(page_title="البحث عن بيانات الطلاب", layout="wide", initial_sidebar_state="collapsed")
 
-# إخفاء عناصر الواجهة الافتراضية
+# إخفاء عناصر Streamlit الافتراضية + اتجاه عربي
 st.markdown("""
     <style>
-    #MainMenu {visibility: hidden;}
-    footer {visibility: hidden;}
-    header {visibility: hidden;}
-    .stApp {
-        direction: rtl;
-        text-align: right;
-        font-family: 'Tajawal', 'Arial', sans-serif;
-    }
+    #MainMenu, footer, header {visibility: hidden;}
+    .stApp {direction: rtl; text-align: right; font-family: 'Tajawal', Arial, sans-serif;}
     .stTextInput > div > div > label {width: 100%;}
     </style>
 """, unsafe_allow_html=True)
 
 st.title("البحث عن بيانات الطلاب")
 
-# ──── الاتصال بـ Google Sheet (مع cache) ────
-@st.cache_resource(show_spinner="جاري الاتصال بقاعدة البيانات...")
-def load_worksheet():
+# ──── الاتصال بـ Google Sheet ────
+@st.cache_resource(show_spinner="جاري الاتصال...")
+def get_sheet():
     try:
         creds = service_account.Credentials.from_service_account_info(
             st.secrets["gcp_service_account"],
-            scopes=[
-                "https://www.googleapis.com/auth/spreadsheets",
-                "https://www.googleapis.com/auth/drive"
-            ]
+            scopes=["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
         )
         client = gspread.authorize(creds)
         sheet_id = st.secrets["gsheet"]["sheet_id"]
-        spreadsheet = client.open_by_key(sheet_id)
-        return spreadsheet.sheet1   # ← غيّر إلى spreadsheet.worksheet("اسم الورقة") إذا لزم
-
+        ss = client.open_by_key(sheet_id)
+        return ss.sheet1
     except Exception as e:
-        st.error(f"فشل الاتصال بـ Google Sheets\n{str(e)}")
-        st.info("التحقق من:\n• إيميل الـ service account مضاف كـ Editor في الشيت\n• أسماء المفاتيح في Secrets مطابقة")
+        st.error(f"خطأ في الاتصال: {str(e)}")
         return None
 
+ws = get_sheet()
 
-# ──── تحميل البيانات ────
-ws = load_worksheet()
-
-if ws is None:
+if not ws:
     st.stop()
 
+# ──── قراءة + تنظيف ────
 try:
-    raw_rows = ws.get_all_records()
-
-    if not raw_rows:
-        st.info("لا توجد بيانات بعد صف العناوين.")
+    data = ws.get_all_records()
+    if not data:
+        st.info("الورقة فارغة أو بدون بيانات بعد صف العناوين.")
         st.stop()
 
-    df = pd.DataFrame(raw_rows)
+    df = pd.DataFrame(data)
 
-    # تنظيف أسماء الأعمدة
-    df.columns = (
-        df.columns
-        .str.strip()
-        .str.replace(r'\s+', ' ', regex=True)
-        .str.replace(r'[\(\)]', '', regex=True)   # إزالة الأقواس إذا أردت
-    )
+    # تنظيف أسماء الأعمدة (مهم جدًا في حالتك)
+    df.columns = df.columns.str.strip().str.replace(r'\s+', ' ', regex=True)
 
-    # ──── عرض أسماء الأعمدة للتصحيح (يمكنك تعليقه لاحقًا) ────
-    with st.expander("أسماء الأعمدة بعد التنظيف (للتحقق فقط)", expanded=False):
-        st.code("\n".join(f"• {col}" for col in df.columns), language="text")
+    # عرض الأعمدة للتأكد (احذف هذا بعد ما تتأكد)
+    with st.expander("أسماء الأعمدة الحقيقية بعد التنظيف"):
+        st.code("\n".join(df.columns.tolist()))
 
     st.divider()
     st.subheader("ابحث عن طالب")
 
-    search_text = st.text_input(
-        "اسم الطالب أو رقم الموبايل (واتساب)",
-        placeholder="اكتب الاسم أو الرقم بدون مسافات أو +",
-        key="search_input"
+    search = st.text_input(
+        "اسم الطفل أو رقم الواتساب أو الرقم البديل",
+        placeholder="مثال: تيم الحسن   أو   1229920187   أو   01287975713",
+        key="searchbox"
     ).strip()
 
-    col1, col2 = st.columns([3, 1])
-    with col2:
-        search_button = st.button("بحث", type="primary", use_container_width=True)
+    if st.button("بحث", type="primary"):
+        if not search:
+            st.info("اكتب اسم أو رقم")
+            st.stop()
 
-    if search_button and search_text:
         # تنظيف نص البحث
-        search_clean = re.sub(r'[^0-9]', '', search_text)  # أرقام فقط
+        search_clean = re.sub(r'[^0-9\u0660-\u0669]', '', search)  # أرقام فقط (عربي + إنجليزي)
 
-        # تنظيف أعمدة البحث
+        # الأعمدة المستهدفة (استخدمنا contains عشان المسافات الزيادة)
         name_candidates = [c for c in df.columns if 'اسم الطفل' in c]
-        phone_candidates = [c for c in df.columns if 'موبايل' in c and 'واتساب' in c]
+        whatsapp_col = next((c for c in df.columns if 'واتساب' in c), None)
+        alt_phone_col = next((c for c in df.columns if 'بديل' in c and 'موبايل' in c), None)
 
-        if not name_candidates or not phone_candidates:
-            st.error("لم يتم العثور على أعمدة البحث المتوقعة")
-            st.write("الأعمدة المتاحة:", list(df.columns))
+        if not name_candidates or not whatsapp_col:
+            st.error("مشكلة في أسماء الأعمدة — تحقق من الـ expander أعلاه")
             st.stop()
 
         name_col = name_candidates[0]
-        phone_col = phone_candidates[0]
 
-        # تنظيف عمود الرقم بشكل شامل
-        df[phone_col] = (
-            df[phone_col]
-            .astype(str)
-            .str.strip()
-            .str.replace(r'[^0-9]', '', regex=True)          # إبقاء الأرقام فقط
-            .str.replace(r'^0+', '', regex=True)             # إزالة الصفر في البداية إن وجد
-        )
+        # تنظيف أعمدة الأرقام بشكل قوي
+        for col in [whatsapp_col, alt_phone_col]:
+            if col and col in df.columns:
+                df[col] = (
+                    df[col]
+                    .astype(str)
+                    .str.strip()
+                    .str.replace(r'[^0-9\u0660-\u0669]', '', regex=True)   # أرقام فقط
+                    .str.replace(r'^0+', '', regex=True)                   # إزالة صفر البداية
+                )
 
         # البحث
-        mask_name = (
-            df[name_col]
-            .astype(str)
-            .str.contains(search_text, case=False, na=False)
-        )
+        mask_name  = df[name_col].astype(str).str.contains(search, case=False, na=False)
 
-        mask_phone = (
-            df[phone_col]
-            .str.contains(search_clean, na=False)
-            | df[phone_col].str.endswith(search_clean)      # نهاية الرقم
-            | df[phone_col].str.startswith(search_clean)    # بداية الرقم
-        )
+        mask_whatsapp = False
+        if whatsapp_col:
+            mask_whatsapp = df[whatsapp_col].str.contains(search_clean, na=False)
 
-        results = df[mask_name | mask_phone].copy()
+        mask_alt = False
+        if alt_phone_col:
+            mask_alt = df[alt_phone_col].str.contains(search_clean, na=False)
+
+        results = df[mask_name | mask_whatsapp | mask_alt]
 
         if results.empty:
-            st.warning("لم يتم العثور على نتائج مطابقة.")
+            st.warning("ما فيش نتايج مطابقة")
         else:
             st.success(f"تم العثور على {len(results)} نتيجة")
             st.dataframe(
                 results,
                 use_container_width=True,
-                hide_index=True,
-                column_config={
-                    col: st.column_config.TextColumn(col, width="medium")
-                    for col in results.select_dtypes(include='object').columns
-                }
+                hide_index=True
             )
 
 except Exception as e:
-    st.error("حدث خطأ أثناء معالجة البيانات")
+    st.error("خطأ أثناء قراءة البيانات")
     st.exception(e)
 
 st.markdown("---")
