@@ -14,49 +14,229 @@ st.set_page_config(
 )
 
 # ══════════════════════════════════════════════════════════════
-# 🎨 التنسيقات والأنماط
+# 🎨 التنسيقات والأنماط - RTL كامل
 # ══════════════════════════════════════════════════════════════
 st.markdown("""
     <style>
+    /* إخفاء عناصر Streamlit */
     #MainMenu, footer, header {visibility: hidden;}
+    
+    /* RTL للتطبيق بالكامل */
     .stApp {
-        direction: rtl; 
-        text-align: right; 
-        font-family: 'Tajawal', 'Cairo', Arial, sans-serif;
+        direction: rtl !important;
+        text-align: right !important;
+        font-family: 'Tajawal', 'Cairo', 'Segoe UI', Arial, sans-serif !important;
+        background: #0e1117;
     }
-    .stTextInput > div > div > label {width: 100%;}
+    
+    /* RTL لجميع العناصر */
+    div, p, span, h1, h2, h3, label, input, textarea, select {
+        direction: rtl !important;
+        text-align: right !important;
+    }
+    
+    /* Header */
+    h1 {
+        color: #ffffff;
+        text-align: center !important;
+        margin-bottom: 10px;
+    }
+    
+    /* Subtitle */
+    .subtitle {
+        text-align: center !important;
+        color: #a0a0a0;
+        font-size: 14px;
+        margin-bottom: 30px;
+    }
+    
+    /* Tabs */
+    .stTabs {
+        direction: rtl !important;
+    }
+    
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 8px;
+        direction: rtl !important;
+    }
+    
+    .stTabs [data-baseweb="tab"] {
+        direction: rtl !important;
+        text-align: right !important;
+        background-color: #1e1e1e;
+        border-radius: 8px;
+        color: #ffffff;
+        padding: 10px 20px;
+    }
+    
+    .stTabs [aria-selected="true"] {
+        background-color: #2d5f8d !important;
+    }
+    
+    /* Input Fields */
+    .stTextInput > div > div > input {
+        direction: rtl !important;
+        text-align: right !important;
+        background-color: #1e1e1e;
+        border: 1px solid #333;
+        border-radius: 8px;
+        color: #ffffff;
+        padding: 12px;
+    }
+    
+    .stTextInput > label {
+        color: #ffffff !important;
+        font-weight: 600;
+    }
+    
+    /* Buttons */
+    .stButton > button {
+        width: 100%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 12px 24px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    
+    .stButton > button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(102, 126, 234, 0.4);
+    }
+    
+    /* Expander */
+    .streamlit-expanderHeader {
+        direction: rtl !important;
+        text-align: right !important;
+        background-color: #1e1e1e !important;
+        border: 1px solid #333 !important;
+        border-radius: 8px !important;
+        color: #ffffff !important;
+        font-weight: 600;
+    }
+    
+    .streamlit-expanderContent {
+        direction: rtl !important;
+        text-align: right !important;
+        background-color: #0e1117 !important;
+        border: 1px solid #333 !important;
+        border-top: none !important;
+        border-radius: 0 0 8px 8px !important;
+    }
     
     /* بطاقات التقييم */
     .metric-card {
-        padding: 25px;
-        border-radius: 15px;
+        padding: 30px 20px;
+        border-radius: 16px;
         color: white;
         text-align: center;
-        margin: 15px 0;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        margin: 15px 5px;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+        transition: transform 0.3s;
     }
+    
+    .metric-card:hover {
+        transform: translateY(-5px);
+    }
+    
     .metric-title {
         font-size: 20px;
-        font-weight: bold;
-        margin-bottom: 10px;
+        font-weight: 700;
+        margin-bottom: 15px;
         opacity: 0.95;
+        letter-spacing: 0.5px;
     }
+    
     .metric-score {
-        font-size: 56px;
-        font-weight: bold;
-        margin: 15px 0;
+        font-size: 64px;
+        font-weight: 900;
+        margin: 20px 0;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.2);
     }
+    
     .metric-level {
         font-size: 16px;
         opacity: 0.9;
-        margin-top: 5px;
+        margin-top: 10px;
+        font-weight: 500;
     }
     
     /* ألوان المستويات */
-    .excellent { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
-    .very-good { background: linear-gradient(135deg, #4776E6 0%, #8E54E9 100%); }
-    .good { background: linear-gradient(135deg, #F09819 0%, #EDDE5D 100%); }
-    .needs-improvement { background: linear-gradient(135deg, #ED213A 0%, #93291E 100%); }
+    .excellent { 
+        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    }
+    .very-good { 
+        background: linear-gradient(135deg, #4776E6 0%, #8E54E9 100%);
+    }
+    .good { 
+        background: linear-gradient(135deg, #F09819 0%, #EDDE5D 100%);
+        color: #333 !important;
+    }
+    .good .metric-score, .good .metric-title, .good .metric-level {
+        color: #333 !important;
+    }
+    .needs-improvement { 
+        background: linear-gradient(135deg, #ED213A 0%, #93291E 100%);
+    }
+    
+    /* Alert boxes */
+    .stAlert {
+        direction: rtl !important;
+        text-align: right !important;
+        border-radius: 8px;
+    }
+    
+    /* Success/Warning/Error messages */
+    .stSuccess, .stWarning, .stError, .stInfo {
+        direction: rtl !important;
+        text-align: right !important;
+    }
+    
+    /* Metrics */
+    [data-testid="stMetricValue"] {
+        direction: rtl !important;
+        text-align: center !important;
+        font-size: 32px !important;
+        color: #667eea !important;
+    }
+    
+    [data-testid="stMetricLabel"] {
+        direction: rtl !important;
+        text-align: center !important;
+        color: #ffffff !important;
+    }
+    
+    /* Download button */
+    .stDownloadButton > button {
+        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 12px 24px;
+        font-size: 16px;
+        font-weight: bold;
+        width: 100%;
+    }
+    
+    /* Divider */
+    hr {
+        margin: 30px 0;
+        border-color: #333;
+    }
+    
+    /* Tables */
+    .dataframe {
+        direction: rtl !important;
+    }
+    
+    /* Markdown content */
+    .element-container {
+        direction: rtl !important;
+    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -409,7 +589,7 @@ def get_sheet():
 # ══════════════════════════════════════════════════════════════
 
 st.title("⚽ نظام تقييم الطلاب الرياضي الذكي")
-st.markdown("**مؤسسة EDUVIA الرياضية** | نظام تقييم شامل بمعايير عالمية")
+st.markdown('<p class="subtitle">مؤسسة EDUVIA الرياضية | نظام تقييم شامل بمعايير عالمية</p>', unsafe_allow_html=True)
 
 ws = get_sheet()
 
@@ -440,8 +620,9 @@ try:
         with col1:
             search = st.text_input(
                 "اسم الطفل أو رقم الموبايل",
-                placeholder="مثال: تيم الحسن  أو  1229920187",
-                key="search"
+                placeholder="مثال: محمد طارق  أو  01229920187",
+                key="search",
+                label_visibility="visible"
             ).strip()
         
         with col2:
@@ -464,12 +645,14 @@ try:
             results = df[mask]
             
             if results.empty:
-                st.warning("❌ لم يتم العثور على نتائج")
+                st.warning("❌ لم يتم العثور على نتائج مطابقة")
             else:
-                st.success(f"✅ تم العثور على {len(results)} طالب")
+                st.success(f"✅ تم العثور على {len(results)} نتيجة")
                 
                 for idx, row in results.iterrows():
-                    with st.expander(f"📋 {row.get('اسم الطفل  كامل ', 'طالب')} - اضغط للتفاصيل", expanded=True):
+                    student_name = row.get('اسم الطفل  كامل ', 'طالب')
+                    
+                    with st.expander(f"📋 {student_name} - اضغط للتفاصيل", expanded=True):
                         
                         age = safe_int(row.get('السن', 0))
                         height = safe_float(row.get('طول الطفل بالسنتيمتر', 0))
@@ -496,21 +679,22 @@ try:
                             )
                         }
                         
+                        # عرض البطاقات في صف واحد
                         cols = st.columns(4)
                         
-                        metrics = [
-                            ("physical", "💪 البدني", scores["physical"]),
-                            ("technical", "⚽ الفني", scores["technical"]),
-                            ("mental", "🧠 الذهني", scores["mental"]),
-                            ("tactical", "🎯 التكتيكي", scores["tactical"])
+                        metrics_data = [
+                            ("التكتيكي", "🎯", scores["tactical"]),
+                            ("الذهني", "🧠", scores["mental"]),
+                            ("الفني", "⚽", scores["technical"]),
+                            ("البدني", "💪", scores["physical"])
                         ]
                         
-                        for i, (key, title, score) in enumerate(metrics):
+                        for i, (title, icon, score) in enumerate(metrics_data):
                             level, css_class = PlayerEvaluationEngine.get_level_category(score)
                             with cols[i]:
                                 st.markdown(f"""
                                 <div class="metric-card {css_class}">
-                                    <div class="metric-title">{title}</div>
+                                    <div class="metric-title">{icon} {title}</div>
                                     <div class="metric-score">{score:.0f}</div>
                                     <div class="metric-level">{level}</div>
                                 </div>
@@ -518,13 +702,14 @@ try:
                         
                         st.divider()
                         
+                        # التقرير الكامل
                         report = PlayerEvaluationEngine.generate_report(row.to_dict(), scores)
                         st.markdown(report)
                         
                         st.download_button(
                             label="📥 تحميل التقرير كملف نصي",
                             data=report,
-                            file_name=f"تقرير_{row.get('اسم الطفل  كامل ', 'طالب').replace(' ', '_')}.txt",
+                            file_name=f"تقرير_{student_name.replace(' ', '_')}.txt",
                             mime="text/plain",
                             use_container_width=True
                         )
@@ -535,7 +720,7 @@ try:
         col1, col2, col3 = st.columns(3)
         
         with col1:
-            st.metric("عدد الطلاب", len(df))
+            st.metric("إجمالي الطلاب", len(df))
         
         with col2:
             avg_age = df['السن'].apply(safe_int).mean()
